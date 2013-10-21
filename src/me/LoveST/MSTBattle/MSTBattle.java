@@ -11,6 +11,7 @@ import me.LoveST.MSTBattle.Commands.EnableArena;
 import me.LoveST.MSTBattle.Commands.ArenaLobby;
 import me.LoveST.MSTBattle.Commands.SetPlayerOneSpawn;
 import me.LoveST.MSTBattle.Commands.SetPlayerTwoSpawn;
+import me.LoveST.MSTBattle.EventTasks.CreateSign;
 
 
 import org.bukkit.ChatColor;
@@ -35,12 +36,14 @@ public class MSTBattle extends JavaPlugin {
 
 	
 	public EventCheck eventcheck = new EventCheck(this);
+	public CreateSign CreateSign = new CreateSign(this);
 	
 	@Override
 	public void onEnable(){
 		
 		
 		getServer().getPluginManager().registerEvents(eventcheck, this);
+		getServer().getPluginManager().registerEvents(CreateSign, this);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		
@@ -82,12 +85,12 @@ public class MSTBattle extends JavaPlugin {
 			} else if (args.length == 2) {
 				if(args[0].equalsIgnoreCase("create")) {
 					
-					player.sendMessage(this.createarena.CreateArena(args[1]));
+					player.sendMessage(this.createarena.ArenaCreate(args[1]));
 					
 					// @end if command is "create" + the arena name !
 				} else if (args[0].equalsIgnoreCase("delete")) {
 
-						player.sendMessage(this.deletearena.DeleteArena(args[1]));
+						player.sendMessage(this.deletearena.ArenaDelete(args[1]));
 					
 					
 					
@@ -102,7 +105,7 @@ public class MSTBattle extends JavaPlugin {
 					
 
 						Location loc = player.getLocation();
-					player.sendMessage(this.ArenaLobby.ArenaLobby(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
+					player.sendMessage(this.ArenaLobby.ArenaLobbySet(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 					
 					
 	
@@ -110,7 +113,7 @@ public class MSTBattle extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("playerspawn1")) {
 					
 					Location loc = player.getLocation();
-					player.sendMessage(this.SetPlayerOneSpawn.SetPlayerOneSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
+					player.sendMessage(this.SetPlayerOneSpawn.PlayerOneSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 
 					
 
@@ -120,7 +123,7 @@ public class MSTBattle extends JavaPlugin {
 					
 						Location loc = player.getLocation();
 					
-						player.sendMessage(this.SetPlayerTwoSpawn.SetPlayerTwoSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
+						player.sendMessage(this.SetPlayerTwoSpawn.PlayerTwoSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 
 						
 					
@@ -128,13 +131,13 @@ public class MSTBattle extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("disable")) {
 					
 					
-					player.sendMessage(this.disablearena.DisableArena(args[1]));
+					player.sendMessage(this.disablearena.ArenaDisable(args[1]));
 					
 					// @end if command is "disable" + the arena name !
 				} else if (args[0].equalsIgnoreCase("enable")) {
 		
 					
-					player.sendMessage(this.enablearena.EnableArena(args[1]));
+					player.sendMessage(this.enablearena.ArenaEnable(args[1]));
 					
 					// @end if command is "disable" + the arena name !
 				} else {

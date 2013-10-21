@@ -1,0 +1,8 @@
+name: MSTBattle
+main: me.LoveST.MSTBattle.MSTBattle
+version: 1.0
+description:
+            create an arena and set the players and start fighting each other with the available items to use !! enjoy
+commands:
+  MSTB:
+    description: take help how to play the MST-Battle !

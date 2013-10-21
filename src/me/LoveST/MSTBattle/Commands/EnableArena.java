@@ -11,7 +11,7 @@ public class EnableArena {
 		plugin = instance;
 	}
 	
-	public String EnableArena(String arena){
+	public String ArenaEnable(String arena){
 		
 		
 		if(plugin.getConfig().contains(arena)){

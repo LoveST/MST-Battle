@@ -13,7 +13,7 @@ public class DeleteArena {
 	
 	
 	
-	public String DeleteArena(String arena){
+	public String ArenaDelete(String arena){
 		
 		if(plugin.getConfig().contains(arena)) {
 			plugin.getConfig().set(arena, null);

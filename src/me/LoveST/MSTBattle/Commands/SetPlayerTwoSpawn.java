@@ -11,7 +11,7 @@ public class SetPlayerTwoSpawn {
 		plugin = instance;
 	}
 	
-	public String SetPlayerTwoSpawn(String arena, double x , double y , double z , float yaw , float pitch) {
+	public String PlayerTwoSpawn(String arena, double x , double y , double z , float yaw , float pitch) {
 		
 		if(plugin.getConfig().contains(arena + ".player2")){
 			plugin.getConfig().set(arena + ".player2", null);

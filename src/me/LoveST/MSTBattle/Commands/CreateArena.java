@@ -12,7 +12,7 @@ public class CreateArena {
 	}
 	
 	
-	public String CreateArena(String arena) {
+	public String ArenaCreate(String arena) {
 		
 		if(plugin.getConfig().contains(arena)) {
 			return (ChatColor.RED + "[MST-Battle] Arena already created !");

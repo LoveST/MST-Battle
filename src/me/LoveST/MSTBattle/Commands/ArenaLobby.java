@@ -11,7 +11,7 @@ public class ArenaLobby {
 		plugin = instance;
 	}
 	
-	public String ArenaLobby(String arena , double x , double y , double z , float yaw , float pitch) {
+	public String ArenaLobbySet(String arena , double x , double y , double z , float yaw , float pitch) {
 		
 		if(plugin.getConfig().contains(arena)){
 		if(plugin.getConfig().contains(arena + ".lobby")){

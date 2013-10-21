@@ -12,7 +12,7 @@ public class SetPlayerOneSpawn {
 	}
 	
 	
-	public String SetPlayerOneSpawn(String arena, double x , double y , double z , float yaw , float pitch){
+	public String PlayerOneSpawn(String arena, double x , double y , double z , float yaw , float pitch){
 		
 		
 		if(plugin.getConfig().contains(arena + ".player1")){
