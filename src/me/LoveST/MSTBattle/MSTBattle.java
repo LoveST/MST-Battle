@@ -9,6 +9,9 @@ import me.LoveST.MSTBattle.Commands.DeleteArena;
 import me.LoveST.MSTBattle.Commands.DisableArena;
 import me.LoveST.MSTBattle.Commands.EnableArena;
 import me.LoveST.MSTBattle.Commands.ArenaLobby;
+import me.LoveST.MSTBattle.Commands.SetPlayerOneSpawn;
+import me.LoveST.MSTBattle.Commands.SetPlayerTwoSpawn;
+
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,6 +30,9 @@ public class MSTBattle extends JavaPlugin {
 	public EnableArena enablearena = new EnableArena(this);
 	public DisableArena disablearena = new DisableArena(this);
 	public ArenaLobby ArenaLobby = new ArenaLobby(this);
+	public SetPlayerOneSpawn SetPlayerOneSpawn = new SetPlayerOneSpawn(this);
+	public SetPlayerTwoSpawn SetPlayerTwoSpawn = new SetPlayerTwoSpawn(this);
+
 	
 	public EventCheck eventcheck = new EventCheck(this);
 	
@@ -59,7 +65,6 @@ public class MSTBattle extends JavaPlugin {
 			player.sendMessage(ChatColor.GOLD + "/mstb playerspawn2 <arena-name>");	
 			player.sendMessage(ChatColor.GOLD + "/mstb disable <arena-name>");	
 			player.sendMessage(ChatColor.GOLD + "/mstb enable <arena-name>");	
-			this.DisableArena();
 
 				} else {
 					player.sendMessage(ChatColor.GOLD + "/mstb join <arena-name>");
@@ -77,7 +82,7 @@ public class MSTBattle extends JavaPlugin {
 			} else if (args.length == 2) {
 				if(args[0].equalsIgnoreCase("create")) {
 					
-					player.sendMessage(this.enablearena.EnableArena(args[1]));
+					player.sendMessage(this.createarena.CreateArena(args[1]));
 					
 					// @end if command is "create" + the arena name !
 				} else if (args[0].equalsIgnoreCase("delete")) {
@@ -105,37 +110,19 @@ public class MSTBattle extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("playerspawn1")) {
 					
 					Location loc = player.getLocation();
+					player.sendMessage(this.SetPlayerOneSpawn.SetPlayerOneSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
+
 					
-					if(getConfig().contains(args[1] + ".player1")){
-						getConfig().set(args[1]+ ".player1", null);
-						getConfig().addDefault(args[1] + ".player1", loc.getX() + ":" + loc.getY() + ":" + loc.getZ()  + ":" + loc.getYaw() + ":" + loc.getPitch());
-						saveConfig();
-						player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "you set the player 1 spawn in the " + args[1]);
-					} else {
-					
-					getConfig().addDefault(args[1] + ".player1", loc.getX() + ":" + loc.getY() + ":" + loc.getZ()  + ":" + loc.getYaw() + ":" + loc.getPitch());
-					saveConfig();
-					player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "you set the player 1 spawn in the " + args[1]);
-					
-					} // @end if player loc1 already exist
+
 					
 					// @end if command is "playerspawn1" + the arena name !
 				} else if (args[0].equalsIgnoreCase("playerspawn2")) {
 					
 						Location loc = player.getLocation();
 					
-					if(getConfig().contains(args[1] + ".player2")){
-						getConfig().set(args[1]+ ".player2", null);
-						getConfig().addDefault(args[1] + ".player2", loc.getX() + ":" + loc.getY() + ":" + loc.getZ()  + ":" + loc.getYaw() + ":" + loc.getPitch());
-						saveConfig();
-						player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "you set the player 2 spawn in the " + args[1]);
-					} else {
-					
-					getConfig().addDefault(args[1] + ".player2", loc.getX() + ":" + loc.getY() + ":" + loc.getZ()  + ":" + loc.getYaw() + ":" + loc.getPitch());
-					saveConfig();
-					player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "you set the player 2 spawn in the " + args[1]);
+						player.sendMessage(this.SetPlayerTwoSpawn.SetPlayerTwoSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 
-					}
+						
 					
 					// @end if command is "playerspawn2" + the arena name !
 				} else if (args[0].equalsIgnoreCase("disable")) {
@@ -161,11 +148,6 @@ public class MSTBattle extends JavaPlugin {
 			} // @end if args[0-1-2]
 	} // @end if get command "MSTB"
 		return true;
-	}
-
-	private void DisableArena() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	
