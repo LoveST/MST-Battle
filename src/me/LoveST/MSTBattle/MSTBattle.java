@@ -60,29 +60,32 @@ public class MSTBattle extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("MSTB")) {
 			if(args.length  == 0) {
 				if(player.hasPermission("MSTB-Create")) {
-			player.sendMessage(ChatColor.GOLD + "/mstb create <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb delete <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb join <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb lobby <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb playerspawn1 <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb playerspawn2 <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb disable <arena-name>");	
-			player.sendMessage(ChatColor.GOLD + "/mstb enable <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb create <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb delete <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb lobby <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb playerspawn1 <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb playerspawn2 <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb disable <arena-name>");	
+						player.sendMessage(ChatColor.GOLD + "/mstb enable <arena-name>");	
 
 				} else {
-					player.sendMessage(ChatColor.GOLD + "/mstb join <arena-name>");
+						player.sendMessage(ChatColor.GOLD + "/mstb join <arena-name>");
 				} // @end if player has permission
 		
 			} else if (args.length == 1) {
-				
+				if(player.hasPermission("MSTB-Create")){
 					if(args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("playerspawn1") || args[0].equalsIgnoreCase("playerspawn2") || args[0].equalsIgnoreCase("enable") || args[0].equalsIgnoreCase("disable")) {
 						player.sendMessage(ChatColor.RED + "[MST-Battle] Please specified an arena name !");
 					} else {
 						player.sendMessage(ChatColor.RED + "[MST-Battle] Uknown command !!");
-					} // @end if command.args[0] == all mst commands without arena name !
+					} 
+				} else {
+					player.sendMessage(ChatColor.RED + "You dont have permission to do this !!");
+				} // @end if command.args[0] == all mst commands without arena name !
 
 				
 			} else if (args.length == 2) {
+				if(player.hasPermission("MSTB-Create")){
 				if(args[0].equalsIgnoreCase("create")) {
 					
 					player.sendMessage(this.createarena.ArenaCreate(args[1]));
@@ -95,12 +98,6 @@ public class MSTBattle extends JavaPlugin {
 					
 					
 					// @end if command is "delete" + the arena name !
-				} else if (args[0].equalsIgnoreCase("join")) {
-					
-                   
-                   
-                   
-					// @end if command is "join" + the arena name ! 
 				} else if (args[0].equalsIgnoreCase("lobby")) {
 					
 
@@ -144,14 +141,17 @@ public class MSTBattle extends JavaPlugin {
 					player.sendMessage(ChatColor.RED + "[MST-Battle] Uknown error !! ");
 				}
 				
-				
+				} else {
+					player.sendMessage(ChatColor.RED + "You don't have permission to do this !!");
+				}  // @end check if player has permission @ args[2]
 				
 			} else {
 				player.sendMessage(ChatColor.RED + "[MST-Battle] Uknown Command !!");
+			} 
 			} // @end if args[0-1-2]
-	} // @end if get command "MSTB"
+	 // @end if get command "MSTB"
 		return true;
-	}
+	} 
 	
 	
 }
