@@ -17,11 +17,11 @@ public class EnableArena {
 		if(plugin.getConfig().contains(arena)){
 			if(plugin.getConfig().contains(arena + ".status")){
 				plugin.getConfig().set(arena+ ".status", null);
-				plugin.getConfig().addDefault(arena + ".status" , "enabled");
+				plugin.getConfig().addDefault(arena + ".status" , "1");
 				plugin.saveConfig();
 				return (ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + arena + " has been enabled successfully");
 			} else {
-				plugin.getConfig().addDefault(arena + ".status" , "enabled");
+				plugin.getConfig().addDefault(arena + ".status" , "1");
 				plugin.saveConfig();
 				return (ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + arena + " has been enabled successfully");	
 			}

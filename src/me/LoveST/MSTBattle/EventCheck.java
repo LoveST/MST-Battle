@@ -2,6 +2,7 @@ package me.LoveST.MSTBattle;
 
 import java.util.ArrayList;
 
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,12 +11,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import me.LoveST.MSTBattle.EventTasks.ClickSign;
+
 
 public class EventCheck implements Listener {
 
 	public static MSTBattle plugin ;
 	ArrayList<String> arena1p = new ArrayList<String>();
+	public ClickSign ClickSign = new ClickSign(plugin);
+
+
+
 
 	
 	public EventCheck(MSTBattle instance) {
@@ -62,39 +68,6 @@ public class EventCheck implements Listener {
 		}
 	}
 	
-	
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent e){
-				
-		if(plugin.arenaplayers.containsKey(e.getPlayer().getName())){
-			
-			String player = e.getPlayer().getName();
-			String arenaname = plugin.arenaplayers.get(player);
-			
-			if(plugin.arenaplayers.get(arenaname) == "2"){
-				plugin.arenaplayers.remove(arenaname);
-				plugin.arenaplayers.put(arenaname, "1");	
-			} else if (plugin.arenaplayers.get(arenaname) == "1") {
-				plugin.arenaplayers.remove(arenaname);
-				plugin.arenaplayers.put(arenaname, "0");
-			}
-			
-			plugin.arenaplayers.remove(player);
-			plugin.arenaplayers.remove(e + "freeze");
-			
-			String[] cords = plugin.getConfig().getString(arenaname + ".lobby").split(":");
-			double lobbyx = Double.parseDouble(cords[0]);
-			double plobbyy = Double.parseDouble(cords[1]);
-			double lobbyz = Double.parseDouble(cords[2]);
-			float lobbyyaw = Float.parseFloat(cords[3]);
-			float lobbypitch = Float.parseFloat(cords[4]);
-			
-			Location location = new Location(Bukkit.getWorld("world"),lobbyx, plobbyy, lobbyz, lobbyyaw, lobbypitch);
-			e.getPlayer().teleport(location);
-		}
-		
-		
-	}
 	
 	
 	@EventHandler

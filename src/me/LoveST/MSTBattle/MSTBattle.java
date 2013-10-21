@@ -1,17 +1,18 @@
 package me.LoveST.MSTBattle;
 
-
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import me.LoveST.MSTBattle.Commands.ArenaLobby;
 import me.LoveST.MSTBattle.Commands.CreateArena;
 import me.LoveST.MSTBattle.Commands.DeleteArena;
 import me.LoveST.MSTBattle.Commands.DisableArena;
 import me.LoveST.MSTBattle.Commands.EnableArena;
-import me.LoveST.MSTBattle.Commands.ArenaLobby;
 import me.LoveST.MSTBattle.Commands.SetPlayerOneSpawn;
 import me.LoveST.MSTBattle.Commands.SetPlayerTwoSpawn;
 import me.LoveST.MSTBattle.EventTasks.CreateSign;
+import me.LoveST.MSTBattle.EventTasks.ClickSign;
+
 
 
 import org.bukkit.ChatColor;
@@ -20,12 +21,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 public class MSTBattle extends JavaPlugin {
 
-	public final Logger logger = Logger.getLogger("Minecraft"); 
-	public HashMap<String,Integer> arena = new HashMap<String,Integer>();
-	public HashMap<String,String> arenaplayers = new HashMap<String,String>();
+	public final Logger logger = Logger.getLogger("Minecraft");
+	public HashMap<String, String> arenaplayers = new HashMap<String, String>();
+	public HashMap<String, Integer> timerint = new HashMap<String, Integer>();
 	public CreateArena createarena = new CreateArena(this);
 	public DeleteArena deletearena = new DeleteArena(this);
 	public EnableArena enablearena = new EnableArena(this);
@@ -34,29 +34,30 @@ public class MSTBattle extends JavaPlugin {
 	public SetPlayerOneSpawn SetPlayerOneSpawn = new SetPlayerOneSpawn(this);
 	public SetPlayerTwoSpawn SetPlayerTwoSpawn = new SetPlayerTwoSpawn(this);
 
-	
+	public static MSTBattle plugin;
 	public EventCheck eventcheck = new EventCheck(this);
 	public CreateSign CreateSign = new CreateSign(this);
-	
+	public ClickSign ClickSign = new ClickSign(this);
+
+	int number = 10;
+
 	@Override
-	public void onEnable(){
-		
-		
+	public void onEnable() {
+
 		getServer().getPluginManager().registerEvents(eventcheck, this);
 		getServer().getPluginManager().registerEvents(CreateSign, this);
+		getServer().getPluginManager().registerEvents(ClickSign, this);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-		
+
 	}
-	
-	public void onDisable(){
+
+	public void onDisable() {
 		saveConfig();
 	}
-	
-	
-	
+
 	public boolean onCommand(CommandSender sender,Command cmd,String commandLabel,String[] args){
-		Player player = (Player) sender;
+		final Player player = (Player) sender;
 		if(cmd.getName().equalsIgnoreCase("MSTB")) {
 			if(args.length  == 0) {
 				if(player.hasPermission("MSTB-Create")) {
@@ -114,7 +115,7 @@ public class MSTBattle extends JavaPlugin {
 
 					
 
-					
+				
 					// @end if command is "playerspawn1" + the arena name !
 				} else if (args[0].equalsIgnoreCase("playerspawn2")) {
 					
@@ -122,6 +123,20 @@ public class MSTBattle extends JavaPlugin {
 					
 						player.sendMessage(this.SetPlayerTwoSpawn.PlayerTwoSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
 
+						
+						
+						
+						
+						
+						
+				} else if (args[0].equalsIgnoreCase("2player")) {
+					
+					arenaplayers.put("arena1", "1");
+					
+					
+					
+					
+					
 						
 					
 					// @end if command is "playerspawn2" + the arena name !
@@ -151,7 +166,4 @@ public class MSTBattle extends JavaPlugin {
 			} // @end if args[0-1-2]
 	 // @end if get command "MSTB"
 		return true;
-	} 
-	
-	
-}
+	}}
