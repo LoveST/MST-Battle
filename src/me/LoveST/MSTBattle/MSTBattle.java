@@ -3,15 +3,9 @@ package me.LoveST.MSTBattle;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import me.LoveST.MSTBattle.Commands.ArenaLobby;
-import me.LoveST.MSTBattle.Commands.CreateArena;
-import me.LoveST.MSTBattle.Commands.DeleteArena;
-import me.LoveST.MSTBattle.Commands.DisableArena;
-import me.LoveST.MSTBattle.Commands.EnableArena;
-import me.LoveST.MSTBattle.Commands.SetPlayerOneSpawn;
-import me.LoveST.MSTBattle.Commands.SetPlayerTwoSpawn;
 import me.LoveST.MSTBattle.EventTasks.CreateSign;
 import me.LoveST.MSTBattle.EventTasks.ClickSign;
+
 
 
 
@@ -26,13 +20,6 @@ public class MSTBattle extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public HashMap<String, String> arenaplayers = new HashMap<String, String>();
 	public HashMap<String, Integer> timerint = new HashMap<String, Integer>();
-	public CreateArena createarena = new CreateArena(this);
-	public DeleteArena deletearena = new DeleteArena(this);
-	public EnableArena enablearena = new EnableArena(this);
-	public DisableArena disablearena = new DisableArena(this);
-	public ArenaLobby ArenaLobby = new ArenaLobby(this);
-	public SetPlayerOneSpawn SetPlayerOneSpawn = new SetPlayerOneSpawn(this);
-	public SetPlayerTwoSpawn SetPlayerTwoSpawn = new SetPlayerTwoSpawn(this);
 
 	public static MSTBattle plugin;
 	public EventCheck eventcheck = new EventCheck(this);
@@ -55,6 +42,9 @@ public class MSTBattle extends JavaPlugin {
 	public void onDisable() {
 		saveConfig();
 	}
+	
+
+	
 
 	public boolean onCommand(CommandSender sender,Command cmd,String commandLabel,String[] args){
 		final Player player = (Player) sender;
@@ -89,12 +79,24 @@ public class MSTBattle extends JavaPlugin {
 				if(player.hasPermission("MSTB-Create")){
 				if(args[0].equalsIgnoreCase("create")) {
 					
-					player.sendMessage(this.createarena.ArenaCreate(args[1]));
+					if(this.CheckArenaExist(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] The arena already exist !!");
+					} else {
+						if(this.CreateArena(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "The arena created successfully");
+						}
+					}
 					
 					// @end if command is "create" + the arena name !
 				} else if (args[0].equalsIgnoreCase("delete")) {
 
-						player.sendMessage(this.deletearena.ArenaDelete(args[1]));
+					if(!this.CheckArenaExist(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+					} else {
+						if(this.DeleteArena(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "The arena deleted successfully");
+						}
+					}
 					
 					
 					
@@ -103,16 +105,26 @@ public class MSTBattle extends JavaPlugin {
 					
 
 						Location loc = player.getLocation();
-					player.sendMessage(this.ArenaLobby.ArenaLobbySet(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
-					
+						if(!this.CheckArenaExist(args[1])){
+							player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+						} else {
+							if(this.SetArenaLobby(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch())) {
+								player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "the " + args[1] + " main lobby set !");
+							}
+						}
 					
 	
 					// @end if command is "spawn" + the arena name !
 				} else if (args[0].equalsIgnoreCase("playerspawn1")) {
 					
 					Location loc = player.getLocation();
-					player.sendMessage(this.SetPlayerOneSpawn.PlayerOneSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
-
+					if(!this.CheckArenaExist(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+					} else {
+						if(SetPlayerSpawn("player1",args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch())){
+							player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "player one spawn set in : " + args[1]);
+						}
+					}
 					
 
 				
@@ -121,11 +133,15 @@ public class MSTBattle extends JavaPlugin {
 					
 						Location loc = player.getLocation();
 					
-						player.sendMessage(this.SetPlayerTwoSpawn.PlayerTwoSpawn(args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch()));
-
+						if(!this.CheckArenaExist(args[1])){
+							player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+						} else {
+							if(SetPlayerSpawn("player2",args[1], loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch())){
+								player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "player one spawn set in : " + args[1]);
+							}
 						
 						
-						
+						}
 						
 						
 						
@@ -143,17 +159,36 @@ public class MSTBattle extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("disable")) {
 					
 					
-					player.sendMessage(this.disablearena.ArenaDisable(args[1]));
+					if(!this.CheckArenaExist(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+					} else {
+						if(this.DisableArena(args[1])){
+							player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + args[1] + " has been disabled !");
+						}
+					
+					
+					}
+					
 					
 					// @end if command is "disable" + the arena name !
 				} else if (args[0].equalsIgnoreCase("enable")) {
 		
 					
-					player.sendMessage(this.enablearena.ArenaEnable(args[1]));
+					if(!this.CheckArenaExist(args[1])){
+						player.sendMessage(ChatColor.RED + "[MST-Battle] The arena does not exist !!");
+					} else {
+						if(this.EnableArena(args[1])){
+							player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + args[1] + " has been enabled !");
+						}
+					
+					
+					}
+					
 					
 					// @end if command is "disable" + the arena name !
+				
 				} else {
-					player.sendMessage(ChatColor.RED + "[MST-Battle] Uknown error !! ");
+					player.sendMessage(ChatColor.RED + "[MST-Battle] Uknown command !!");
 				}
 				
 				} else {
@@ -166,4 +201,88 @@ public class MSTBattle extends JavaPlugin {
 			} // @end if args[0-1-2]
 	 // @end if get command "MSTB"
 		return true;
-	}}
+	}
+	
+
+
+
+	public boolean CheckArenaExist(String arena){
+		if(this.getConfig().contains(arena)){
+			return true;
+		} else {
+			return false;
+		}
+	
+	}
+	
+	
+	
+	public boolean CreateArena(String arena){
+		
+		this.getConfig().set(arena + ".player1", "null");
+		this.getConfig().set(arena + ".player2", "null");
+		this.getConfig().set(arena + ".lobby", "null");
+		this.getConfig().set(arena + ".status", "0");
+		this.saveConfig();
+		
+		return true;
+	}
+	
+	
+	
+	
+	public String CheckArenaStatus(String arena){
+		if(this.arenaplayers.get(arena) == "2"){
+			return (ChatColor.RED + "[MST-Battle] The arena is full !!");
+		} else {
+			return "";
+		}
+
+	}
+	
+	
+	public boolean EnableArena(String arena){
+		this.getConfig().set(arena + ".status", null);
+		this.getConfig().addDefault(arena + ".status" , "1");
+		this.saveConfig();
+		return true;
+	}
+	
+	
+	public boolean DisableArena(String arena){
+		this.getConfig().set(arena + ".status", null);
+		this.getConfig().addDefault(arena + ".status" , "0");
+		this.saveConfig();
+		return true;
+	}
+	
+	
+	
+	public boolean DeleteArena(String arena){
+		this.getConfig().set(arena, null);
+		this.saveConfig();
+		return true;
+	}
+	
+	
+
+	
+	public boolean SetArenaLobby(String arena, double x , double y , double z , float yaw , float pitch){
+		this.getConfig().set(arena + ".lobby", null);
+		this.getConfig().addDefault(arena + ".lobby", x + ":" + y + ":" + z + ":" + yaw + ":" + pitch );
+		this.saveConfig();
+		return true;
+	}
+	
+	
+	public boolean SetPlayerSpawn(String player, String arena, double x , double y , double z , float yaw , float pitch){
+		this.getConfig().set(arena + "." + player, null);
+		this.getConfig().addDefault(arena + "." + player, x + ":" + y + ":" + z + ":" + yaw + ":" + pitch );
+		this.saveConfig();
+		return true;	
+	}
+	
+	
+
+
+}
