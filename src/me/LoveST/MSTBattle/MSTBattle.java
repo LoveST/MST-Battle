@@ -9,6 +9,8 @@ import me.LoveST.MSTBattle.EventTasks.ClickSign;
 
 
 
+
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -19,18 +21,19 @@ public class MSTBattle extends JavaPlugin {
 
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public HashMap<String, String> arenaplayers = new HashMap<String, String>();
+	public HashMap<String, Integer> freezedplayers = new HashMap<String, Integer>();
 	public HashMap<String, Integer> timerint = new HashMap<String, Integer>();
 
-	public static MSTBattle plugin;
 	public EventCheck eventcheck = new EventCheck(this);
 	public CreateSign CreateSign = new CreateSign(this);
 	public ClickSign ClickSign = new ClickSign(this);
+
 
 	int number = 10;
 
 	@Override
 	public void onEnable() {
-
+		
 		getServer().getPluginManager().registerEvents(eventcheck, this);
 		getServer().getPluginManager().registerEvents(CreateSign, this);
 		getServer().getPluginManager().registerEvents(ClickSign, this);
@@ -38,6 +41,8 @@ public class MSTBattle extends JavaPlugin {
 		saveConfig();
 
 	}
+
+	
 
 	public void onDisable() {
 		saveConfig();
@@ -280,6 +285,36 @@ public class MSTBattle extends JavaPlugin {
 		this.getConfig().addDefault(arena + "." + player, x + ":" + y + ":" + z + ":" + yaw + ":" + pitch );
 		this.saveConfig();
 		return true;	
+	}
+	
+	
+	public int ArenaStatus(int method,String arena,String arenastate){
+		if(method == 0){
+		int state = Integer.parseInt(this.arenaplayers.get(arena));	
+		return state;
+		} else {
+			this.arenaplayers.put(arena, arenastate);
+			return 1;
+		}
+	}
+	
+	
+	
+	
+	public int PlayerFreeze(int method,String playername, int p){
+		if(method == 0){
+		int freeze =	this.freezedplayers.get(playername);
+		return freeze;
+		
+		
+		} else if (method == 1){
+			this.freezedplayers.put(playername, p);
+			return 1;
+		} else {
+			this.freezedplayers.remove(playername);
+			return 1;
+		}
+
 	}
 	
 	

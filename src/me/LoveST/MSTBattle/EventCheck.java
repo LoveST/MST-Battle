@@ -3,14 +3,14 @@ package me.LoveST.MSTBattle;
 import java.util.ArrayList;
 
 
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import me.LoveST.MSTBattle.EventTasks.ClickSign;
 
 
@@ -40,7 +40,7 @@ public class EventCheck implements Listener {
 			Location playerLocation = p.getLocation();
 			String PlayerNumber;
 			
-			if(plugin.arenaplayers.get(p.getName() + "freeze") == "1"){
+			if(plugin.PlayerFreeze(0, p.getName(),1) == 1){
 				PlayerNumber = "1";
 			} else {
 				PlayerNumber = "2";
@@ -68,23 +68,7 @@ public class EventCheck implements Listener {
 		}
 	}
 	
-	
-	
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent e){
-		Player player = e.getPlayer();
-		
-		if(plugin.arenaplayers.containsKey(player.getName())){
-		if(e.getMessage().equalsIgnoreCase("/mstb leave")){
-			
-		} else {
-			e.setCancelled(true);
-			player.sendMessage(ChatColor.RED + "[MST-Battle] You're not allowed to use commands while in game !!");
-			}
-		}
-		
-	}
-		
+
 		
 	
 	

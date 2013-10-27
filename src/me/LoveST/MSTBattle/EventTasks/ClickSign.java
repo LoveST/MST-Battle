@@ -29,21 +29,11 @@ public class ClickSign implements Listener {
 		plugin.timerint.put("timer", number);
 	@SuppressWarnings("deprecation")
 
-	int timer = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+	 int timer = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
 		
 		
 		public void run(){
-			if(plugin.timerint.get("timer") != -1) {
-			if(plugin.timerint.get("timer") > 0){
-				player.sendMessage(ChatColor.RED + "[MST-Battle]" + ChatColor.GREEN + " The game will start in : " + ChatColor.RED + plugin.timerint.get("timer"));
-				plugin.timerint.put("timer", plugin.timerint.get("timer") - 1);
-			} else {
-				player.sendMessage(ChatColor.RED + "[MST-Battle] " + ChatColor.GREEN + "Fight !!");
-				plugin.timerint.put("timer", plugin.timerint.get("timer") - 1);
-
-			}
 			
-		}
 		}
 		
 	}, 0L, 20L);
@@ -117,21 +107,13 @@ public class ClickSign implements Listener {
 	                								
 	                								p.teleport(location);
 	                								
-	                								plugin.arenaplayers.put(p.getName() + "freeze", "1");
+	                								plugin.PlayerFreeze(1, p.getName(),1);
+	                								
 	                								p.setGameMode(GameMode.SURVIVAL);
 	            	             					
 	            	             					
 	            	             					
-	            	             					
-	            	             					
-	            	             					
-	            	             					
-	            	             					
-	            	             					
-	            	             					
-	            	             					
-		            	
-		            				
+
 		            				
 		            				
 		            				
@@ -168,13 +150,14 @@ public class ClickSign implements Listener {
 	                								
 	                								p.teleport(location);
 	                								
-	                								plugin.arenaplayers.put(p.getName() + "freeze", "2");
+	                								plugin.PlayerFreeze(1, p.getName(),2);
+	                								
 	                								p.setGameMode(GameMode.SURVIVAL);
 	            	             					
 	            	             					
 	            	             					
 	            	             					// timer start
-	                								this.TimerStart(p);
+	                								
 	            	             					
 	            	             					
 	            	             					
@@ -222,7 +205,7 @@ public class ClickSign implements Listener {
 	            		if(plugin.arenaplayers.containsKey(p.getName())){
 	            			
 	            			plugin.getServer().getScheduler().cancelTask(this.TimerStart(p));
-	            			plugin.arenaplayers.remove(p.getName() + "freeze");
+	            			plugin.PlayerFreeze(2, p.getName(),1);
 	            			
 	            			String[] cords = plugin.getConfig().getString(arenaname + ".lobby").split(":");
 	            			double lobbyx = Double.parseDouble(cords[0]);
@@ -231,11 +214,11 @@ public class ClickSign implements Listener {
 	            			float lobbyyaw = Float.parseFloat(cords[3]);
 	            			float lobbypitch = Float.parseFloat(cords[4]);
 	            			
-	            			if(plugin.arenaplayers.get(arenaname) == "2"){
-	            				plugin.arenaplayers.put(arenaname, "1");
+	            			if(plugin.ArenaStatus(0,arenaname,"1") == 2){
+	            				plugin.ArenaStatus(1,arenaname,"1");
 	            			
-	            			} else if(plugin.arenaplayers.get(arenaname) == "1"){
-	            				plugin.arenaplayers.put(arenaname, "0");
+	            			} else if(plugin.ArenaStatus(0,arenaname,"1") == 1){
+	            				plugin.ArenaStatus(1,arenaname,"0");
 	            			}
 	            			
 	            			
@@ -276,19 +259,19 @@ public class ClickSign implements Listener {
 			String arenaname = plugin.arenaplayers.get(player);
 			ItemStack air = new ItemStack(Material.AIR);
 			
-			if(plugin.arenaplayers.get(arenaname) == "2"){
+			if(plugin.ArenaStatus(0,arenaname,"2") == 2){
 				plugin.getServer().getScheduler().cancelTask(TimerStart(e.getPlayer()));
 				plugin.timerint.remove("timer");
 				plugin.arenaplayers.remove(arenaname);
 				plugin.arenaplayers.put(arenaname, "1");	
-			} else if (plugin.arenaplayers.get(arenaname) == "1") {
+			} else if (plugin.ArenaStatus(0,arenaname,"2") == 1) {
 				plugin.arenaplayers.remove(arenaname);
 				plugin.arenaplayers.put(arenaname, "0");
 			}
 			
 		//	plugin.getServer().getScheduler().cancelTask(timer);
 			plugin.arenaplayers.remove(player);
-			plugin.arenaplayers.remove(player + "freeze");
+			plugin.PlayerFreeze(2, player,1);
 			
 			
 			e.getPlayer().getPlayer().getInventory().clear();
